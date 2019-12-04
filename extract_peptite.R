@@ -73,23 +73,13 @@ func <- function(x,vcf){
   }
 }
 
-
-
-
-
-
-
-
 test1 <- foreach(x=1:nrow(vcf1), .combine="rbind", .packages=c("magrittr","dplyr","stringr")) %dopar% func(x,vcf=vcf1)
 test2 <- foreach(x=1:nrow(vcf2), .combine="rbind", .packages=c("magrittr","dplyr","stringr")) %dopar% func(x,vcf=vcf2)
 test3 <- foreach(x=1:nrow(vcf3), .combine="rbind", .packages=c("magrittr","dplyr","stringr")) %dopar% func(x,vcf=vcf3)
 
-
-
 test1_1 <- test1 %>% as.tibble %>% unite(index, POS, trans_id, sep='_')
 test2_2 <- test2 %>% as.tibble %>% unite(index, POS, trans_id, sep='_')
 test3_3 <- test3 %>% as.tibble %>% unite(index, POS, trans_id, sep='_')
-
 
 all_index <- intersect(intersect(test1_1$index, test2_2$index), test3_3$index)
 intersect_test <- test1_1 %>% filter(index %in% all_index)
